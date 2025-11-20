@@ -3,7 +3,7 @@ import { Users, UserCheck, IndianRupee, AlertCircle } from "lucide-react";
 import { StatsCard } from "@/components/dashboard/StatsCard";
 import { FeeChart } from "@/components/dashboard/FeeChart";
 import { AttendanceChart } from "@/components/dashboard/AttendanceChart";
-
+// import "../globals.css";
 export default function DashboardHome() {
   return (
     <>

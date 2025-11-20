@@ -2,7 +2,7 @@
 "use client";
 
 import { useState } from "react";
-import { Home, Users, UserCheck, Building2, BookOpen, Bus, Library, Calendar, DollarSign, FileText, Settings, MessageSquare, BarChart3, Clock } from "lucide-react";
+import { Home, Users, UserCheck, Building2, BookOpen, Bus, Library, Calendar, DollarSign, FileText, Settings, MessageSquare, BarChart3, Clock,Hotel, Calendars, FolderKanban } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -19,7 +19,10 @@ const menuItems = [
   { title: "Timetable", icon: Clock, href: "/dashboard/timetable/" },
   { title: "Library", icon: Library, href: "/dashboard/library/books" },
   { title: "Transport", icon: Bus, href: "/dashboard/transport/routes" },
+  { title: "hostel", icon: Hotel, href: "/dashboard/hostel/rooms" },
+  { title: "events", icon:  Calendars, href: "/dashboard/events" },
   { title: "Communication", icon: MessageSquare, href: "/dashboard/communication/notices" },
+  { title: "Inventory", icon: FolderKanban , href: "/dashboard/inventory/items" },
   { title: "Reports", icon: BarChart3, href: "/dashboard/reports" },
   { title: "Settings", icon: Settings, href: "/dashboard/settings/general" },
 ];
