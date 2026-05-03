@@ -171,4 +171,4 @@ export default function FeesDashboard() {
       </Card>
     </div>
   );
-}
+}   
