@@ -14,7 +14,6 @@ export default function EventRegistrations() {
           <Download className="w-6 h-6" /> Export Excel
         </Button>
       </div>
-
       <Table>
         <TableHeader>
           <TableRow>

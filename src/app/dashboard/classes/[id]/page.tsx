@@ -1,7 +1,6 @@
-// app/(dashboard)/classes/[id]/page.tsx
 "use client";
 
-import { use } from "react";
+import { use, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
@@ -9,8 +8,29 @@ import { ArrowLeft, Users, BookOpen, Calendar, Edit } from "lucide-react";
 import Link from "next/link";
 
 export default function ClassDetail({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = use(params); // This fixes the Promise error
-  const className = `Class ${id}`;
+  const { id } = use(params);
+
+  const [classData, setClassData] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchClass = async () => {
+      try {
+        const res = await fetch(`http://localhost:5000/class/${id}`);
+        const data = await res.json();
+        setClassData(data);
+      } catch (error) {
+        console.error("Error fetching class:", error);
+      }
+    };
+
+    fetchClass();
+  }, [id]);
+
+  if (!classData) {
+    return <div className="p-6">Loading...</div>;
+  }
+
+  const className = classData.className;
 
   return (
     <div className="max-w-7xl mx-auto space-y-6 p-6">
@@ -41,7 +61,9 @@ export default function ClassDetail({ params }: { params: Promise<{ id: string }
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-5xl font-bold text-blue-600">156</p>
+            <p className="text-5xl font-bold text-blue-600">
+              {classData.strength || 0}
+            </p>
           </CardContent>
         </Card>
 
@@ -50,7 +72,9 @@ export default function ClassDetail({ params }: { params: Promise<{ id: string }
             <CardTitle className="text-green-700">Sections</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-5xl font-bold text-green-600">4</p>
+            <p className="text-5xl font-bold text-green-600">
+              {classData.section || "-"}
+            </p>
           </CardContent>
         </Card>
 
@@ -61,7 +85,7 @@ export default function ClassDetail({ params }: { params: Promise<{ id: string }
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-5xl font-bold text-purple-600">8</p>
+            <p className="text-5xl font-bold text-purple-600">--</p>
           </CardContent>
         </Card>
 
@@ -70,29 +94,20 @@ export default function ClassDetail({ params }: { params: Promise<{ id: string }
             <CardTitle className="text-orange-700">Class Teacher</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-2xl font-bold">Mrs. Priya Singh</p>
+            <p className="text-2xl font-bold">--</p>
           </CardContent>
         </Card>
       </div>
 
-      {/* Navigation Tabs */}
+      {/* Tabs */}
       <Tabs defaultValue="sections" className="w-full">
         <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 rounded-xl h-14 bg-gray-100 dark:bg-gray-800">
-          <TabsTrigger value="sections" className="text-sm font-medium">
-            Sections (A, B, C, D)
-          </TabsTrigger>
-          <TabsTrigger value="students" className="text-sm font-medium">
-            Students
-          </TabsTrigger>
-          <TabsTrigger value="subjects" className="text-sm font-medium">
-            Subjects
-          </TabsTrigger>
-          <TabsTrigger value="timetable" className="text-sm font-medium">
-            Timetable
-          </TabsTrigger>
+          <TabsTrigger value="sections">Sections ({classData.section || "-"})</TabsTrigger>
+          <TabsTrigger value="students">Students</TabsTrigger>
+          <TabsTrigger value="subjects">Subjects</TabsTrigger>
+          <TabsTrigger value="timetable">Timetable</TabsTrigger>
         </TabsList>
 
-        {/* Sections Tab */}
         <TabsContent value="sections" className="mt-6">
           <Link href={`/dashboard/classes/${id}/sections`}>
             <Button size="lg" className="w-full h-40 text-xl font-semibold bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700">
@@ -101,7 +116,6 @@ export default function ClassDetail({ params }: { params: Promise<{ id: string }
           </Link>
         </TabsContent>
 
-        {/* Students Tab */}
         <TabsContent value="students" className="mt-6">
           <Link href={`/dashboard/classes/${id}/students`}>
             <Button size="lg" className="w-full h-40 text-xl font-semibold bg-gradient-to-r from-green-600 to-teal-600 hover:from-green-700 hover:to-teal-700">
@@ -110,7 +124,6 @@ export default function ClassDetail({ params }: { params: Promise<{ id: string }
           </Link>
         </TabsContent>
 
-        {/* Subjects Tab */}
         <TabsContent value="subjects" className="mt-6">
           <Link href={`/dashboard/classes/${id}/subjects`}>
             <Button size="lg" className="w-full h-40 text-xl font-semibold bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700">
@@ -119,7 +132,6 @@ export default function ClassDetail({ params }: { params: Promise<{ id: string }
           </Link>
         </TabsContent>
 
-        {/* Timetable Tab */}
         <TabsContent value="timetable" className="mt-6">
           <Link href={`/dashboard/classes/${id}/timetable`}>
             <Button size="lg" className="w-full h-40 text-xl font-semibold bg-gradient-to-r from-orange-600 to-red-600 hover:from-orange-700 hover:to-red-700">
